@@ -22,6 +22,9 @@ regex = [{'exp': '/show/user/.*(\?|&)userid=(?P<userid>\d+)',
          {'exp': '.*(\?|&)conditions\.(\d)+\.user_id=(?P<userid>\d+)', 
           'field' : 'userid'}]
 
+def hash(salt, value):
+    return hashlib.sha1(salt + value).hexdigest()
+
 def main():
     # Compile regexes
     for r in regex:
@@ -33,7 +36,7 @@ def main():
         parts = line.split(' ', 3)
 
         # Hash IP
-        ip_hash = hashlib.sha1(salt['ip'] + parts[1]).hexdigest()
+        ip_hash = hash(salt['ip'], parts[1])
 
         # Match regexes
         for r in regex:
@@ -41,8 +44,8 @@ def main():
             if match:
                 # If it matches replace the sensitive part with a hash
                 match_string = match.group(r['field'])
-                hash = hashlib.sha1(salt[r['field']] + match_string).hexdigest()
-                parts[3] = parts[3].replace(match_string,hash)
+                match_hash = hash(salt[r['field']], match_string)
+                parts[3] = parts[3].replace(match_string, match_hash)
 
         # Print line
         print '%s %s %s %s' % (parts[0], ip_hash, parts[2], parts[3])
