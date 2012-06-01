@@ -9,15 +9,11 @@ salt = {'ip' : 'change me!',
 
 # List containing dicts of regexes that find sensitive data, 
 # and field names that refer to regex fields and salts
-regex = [{'exp': '/show/user/.*(\?|&)userid=(?P<userid>\d+)', 
-          'field' : 'userid'},
-         {'exp': '/user/(?P<username>[^ /]+)', 
+regex = [{'exp': '/user/(?P<username>[^ /]+)', 
           'field' : 'username'},
-         {'exp': '/verify-email.*(\?|&)email=(?P<email>[^&]+)', 
+         {'exp': '.*(\?|&)email=(?P<email>[^&]+)', 
           'field' : 'email'},
-         {'exp': '/verify-email.*(\?|&)email=.*(\?|&)userid=(?P<userid>\d+)', 
-          'field' : 'userid'},
-         {'exp': '/mod/search/pre/voted.html.*(\?|&)userid=(?P<userid>\d+)', 
+         {'exp': '.*(\?|&)userid=(?P<userid>\d+)', 
           'field' : 'userid'},
          {'exp': '.*(\?|&)conditions\.(\d)+\.user_id=(?P<userid>\d+)', 
           'field' : 'userid'}]
