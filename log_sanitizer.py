@@ -55,7 +55,7 @@ def main(stdin=sys.stdin, stdout=sys.stdout):
             parts[3] = r['exp'].sub(replace(r['field']), parts[3])
 
         # Print line
-        stdout.write('%s %s %s %s\n' % (parts[0], ip_hash, parts[2], parts[3]))
+        stdout.write('%s %s %s %s' % (parts[0], ip_hash, parts[2], parts[3]))
 
 if __name__ == "__main__":
     main()
