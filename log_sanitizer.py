@@ -9,25 +9,40 @@ salt = {'ip' : 'change me!',
 
 # List containing dicts of regexes that find sensitive data, 
 # and field names that refer to regex fields and salts
-regex = [{'exp': '/user/(?P<username>[^ /]+)', 
+regex = [{'exp': '/user/(?P<username>[^\? /]+)', 
           'field' : 'username'},
-         {'exp': '.*(\?|&)email=(?P<email>[^&]+)', 
+         {'exp': '(\?|&)email=(?P<email>[^&]+)', 
           'field' : 'email'},
-         {'exp': '.*(\?|&)userid=(?P<userid>\d+)', 
+         {'exp': '(\?|&)userid=(?P<userid>\d+)', 
           'field' : 'userid'},
-         {'exp': '.*(\?|&)conditions\.(\d)+\.user_id=(?P<userid>\d+)', 
+         {'exp': '(\?|&)conditions\.(\d)+\.user_id=(?P<userid>\d+)', 
+          'field' : 'userid'},
+         {'exp': '(\?|&)conditions\.(\d)+\.name=(?P<username>[^ /]+)',
+          'field' : 'username'},
+         {'exp': '(\?|&)conditions\.(\d)+\.voter_id=(?P<userid>\d+)',
+          'field' : 'userid'},
+         {'exp': '(\?|&)conditions\.(\d)+\.args\.(\d)+=(?P<userid>\d+)',
           'field' : 'userid'}]
 
 def hash(salt, value):
     return hashlib.sha1(salt + value).hexdigest()
 
-def main():
+# Replace function for re.sub()
+# Takes the named group for the given field
+# Replaces the value with a hash
+def replace(field):
+    def replace_string(matchobj):
+        new_hash = hash(salt[field], matchobj.group(field))
+        return matchobj.group(0).replace(matchobj.group(field), new_hash)
+    return replace_string
+
+def main(stdin=sys.stdin, stdout=sys.stdout):
     # Compile regexes
     for r in regex:
         r['exp'] = re.compile(r['exp'])
 
     # Read input
-    for line in sys.stdin:
+    for line in stdin:
         # Split line into: timestamp, ip, http method, rest of line
         parts = line.split(' ', 3)
 
@@ -36,15 +51,11 @@ def main():
 
         # Match regexes
         for r in regex:
-            match = r['exp'].match(parts[3])
-            if match:
-                # If it matches replace the sensitive part with a hash
-                match_string = match.group(r['field'])
-                match_hash = hash(salt[r['field']], match_string)
-                parts[3] = parts[3].replace(match_string, match_hash)
+            # Replace the current field's value
+            parts[3] = r['exp'].sub(replace(r['field']), parts[3])
 
         # Print line
-        print '%s %s %s %s' % (parts[0], ip_hash, parts[2], parts[3])
+        stdout.write('%s %s %s %s\n' % (parts[0], ip_hash, parts[2], parts[3]))
 
 if __name__ == "__main__":
     main()
