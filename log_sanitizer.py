@@ -11,10 +11,17 @@ salt = {'ip' : 'change me!',
 # and field names that refer to regex fields and salts
 regex = [{'exp': '/user/(?P<username>[^\? /]+)', 
           'field' : 'username'},
-         {'exp': '(\?|&)email=(?P<email>[^&]+)', 
+         {'exp': '(\?|&)email=(?P<email>[^ &]+)', 
           'field' : 'email'},
+		 # In one special case the verify-email line is embedded in a /login?uri=... line
+		 # This means that special characters are URL encoded, and we need to match them that way
+         {'exp': '(%3F|%3f|%26)email(%3D|%3d)(?P<email>[^ %]+%40[^%]+)', 
+          'field' : 'email'},		  
          {'exp': '(\?|&)userid=(?P<userid>\d+)', 
           'field' : 'userid'},
+		 # This is also for the special case
+         {'exp': '(%3F|%3f|%26)userid(%3D|%3d)(?P<userid>\d+)', 
+          'field' : 'userid'},		  
          {'exp': '(\?|&)conditions\.(\d)+\.user_id=(?P<userid>\d+)', 
           'field' : 'userid'},
          {'exp': '(\?|&)conditions\.(\d)+\.name=(?P<username>[^ /]+)',
@@ -23,7 +30,7 @@ regex = [{'exp': '/user/(?P<username>[^\? /]+)',
           'field' : 'userid'},
          {'exp': '(\?|&)conditions\.(\d)+\.args\.(\d)+=(?P<userid>\d+)',
           'field' : 'userid'}]
-
+		  
 def hash(salt, value):
     return hashlib.sha1(salt + value).hexdigest()
 
@@ -44,18 +51,18 @@ def main(stdin=sys.stdin, stdout=sys.stdout):
     # Read input
     for line in stdin:
         # Split line into: timestamp, ip, http method, rest of line
-        parts = line.split(' ', 3)
+        [timestamp, ip, http_method, url, rest] = line.split(' ', 4)
 
         # Hash IP
-        ip_hash = hash(salt['ip'], parts[1])
+        ip_hash = hash(salt['ip'], ip)
 
         # Match regexes
         for r in regex:
             # Replace the current field's value
-            parts[3] = r['exp'].sub(replace(r['field']), parts[3])
+            url = r['exp'].sub(replace(r['field']), url)
 
         # Print line
-        stdout.write('%s %s %s %s' % (parts[0], ip_hash, parts[2], parts[3]))
+        stdout.write('%s %s %s %s %s' % (timestamp, ip_hash, http_method, url, rest))
 
 if __name__ == "__main__":
     main()
