@@ -27,7 +27,9 @@ def main():
         response = splunk_conn.jobs.create(query['query'], exec_mode="oneshot", output_mode="json")
         
         print "Processing query: %s" % query['name']
-        data = str(response)
+        data_json = json.loads(str(response))
+        data_json_wrapper = {'data': data_json}
+        data = json.dumps(data_json_wrapper)
         
         # Store results in db
         db_cur.execute("INSERT INTO log_statistic (report_type, data) VALUES (%s, %s);",
