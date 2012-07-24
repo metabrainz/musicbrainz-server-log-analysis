@@ -2,7 +2,9 @@
 
 import psycopg2
 import sys, utils, json, yaml, config
+
 from splunklib.client import connect
+from splunklib.binding import HTTPError
 
 def main():
 
@@ -13,16 +15,16 @@ def main():
     # Connect to splunk
     try:
         splunk_conn = connect(**config.SPLUNK_CREDENTIALS)
-    except:
-        print "Couldn't connect to Splunk server"
+    except HTTPError, e:
+        print "Splunk error: %s" % str(e.message)
         sys.exit(1)
     
     # Connect to the db
     try:
         db_conn = psycopg2.connect(config.DB_CREDENTIALS)
     except Exception, e:
-            print e.pgerror
-            sys.exit(1)
+        print e.pgerror
+        sys.exit(1)
             
     db_cur = db_conn.cursor()
     
@@ -35,8 +37,8 @@ def main():
         # Get response in JSON format
         try:
             response = splunk_conn.jobs.create(query['query'], exec_mode="oneshot", output_mode="json")
-        except:
-            print "Error running Splunk query: %s" % (query['query'])
+        except HTTPError, e:
+            print "Splunk error: %s" % str(e.message)
             sys.exit(1)
             
         print "Processing query: %s" % query['name']
