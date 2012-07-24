@@ -22,8 +22,8 @@ def main():
     # Connect to the db
     try:
         db_conn = psycopg2.connect(config.DB_CREDENTIALS)
-    except Exception, e:
-        print e.pgerror
+    except psycopg2.OperationalError, e:
+        print e
         sys.exit(1)
             
     db_cur = db_conn.cursor()
@@ -52,6 +52,9 @@ def main():
                 ("Test report type", str(data)))
             db_conn.commit()
         except Exception, e:
+            # Rollback
+            db_conn.rollback()
+            
             # Print error, return exit code 1
             print e.pgerror
             sys.exit(1)
