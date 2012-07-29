@@ -4,8 +4,8 @@
 db_host = '127.0.0.1'
 db_port = 5432
 db_name = 'musicbrainz_db'
-db_user = 'user'
-db_password = 'password'
+db_user = 'musicbrainz'
+db_password = 'musicbrainz'
 
 db_template = "host=%s port=%s dbname=%s user=%s"
 DB_CREDENTIALS = db_template % (db_host, db_port, db_name, db_user)
