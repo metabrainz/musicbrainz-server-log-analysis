@@ -1,85 +1,92 @@
-- top_artists:
-    name: 'Top artists'
-    query: 'search http 200 | regex url="^(/ws/\d)?/artist/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" | head 1000 | top mbid'
-    history: true
-    daily: true
-- top_release_groups:
-    name: 'Top release-groups'
-    query: 'search http 200 | regex url="^(/ws/\d)?/release-group/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" | head 1000 | top mbid'
-    history: true
-    daily: true
-- top_releases:
-    name: 'Top releases'
-    query: 'search http 200 | regex url="^(/ws/\d)?/release/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" | head 1000 | top mbid'
-    history: true
-    daily: true
-- top_recordings:
-    name: 'Top recordings'
-    query: 'search http 200 | regex url="^(/ws/\d)?/(recording|track)/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" | head 1000 | top mbid'
-    history: true
-    daily: true
-- top_works:
-    name: 'Top works'
-    query: 'search http 200 | regex url="^(/ws/\d)?/work/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" | head 100 | top mbid'
-    history: true
-    daily: true
-- top_labels:
-    name: 'Top labels'
-    query: 'search http 200 | regex url="^(/ws/\d)?/label/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" | head 10 | top mbid' 
-    history: true
-    daily: true
-- about:
-    name: 'View count: About'
-    query: 'search http 200 | head 1000 | regex url="^/doc/About" | stats count AS "About"'
-    history: false
-    daily: true
-- sponsors:
-    name: 'View count: Sponsors'
-    query: 'search http 200 | head 1000 | regex url="^/doc/About/Sponsors" | stats count AS "Sponsors"'
-    history: false
-    daily: true
-- team:
-    name: 'View count: Team'
-    query: 'search http 200 | head 1000 | regex url="^/doc/About/Team" | stats count AS "Team"'
-    history: false
-    daily: true
-- data_license:
-    name: 'View count: Data License'
-    query: 'search http 200 | head 1000 | regex url="^/doc/About/Data_License" | stats count AS "Data License"'
-    history: false
-    daily: true
-- social_contract:
-    name: 'View count: Social Contract'
-    query: 'search http 200 | head 1000 | regex url="^/doc/Social_Contract" | stats count AS "Social Contract"'
-    history: false
-    daily: true
-- code_of_conduct:
-    name: 'View count: Code of Conduct'
-    query: 'search http 200 | head 1000 | regex url="^/doc/Code_of_Conduct" | stats count AS "Code of Conduct"'
-    history: false
-    daily: true
-- privacy_policy:
-    name: 'View count: Privacy Policy'
-    query: 'search http 200 | head 1000 | regex url="^/doc/About/Privacy_Policy" | stats count AS "Privacy Policy"'
-    history: false
-    daily: true
-- auto_editor:
-    name: 'View count: Auto-editor Elections'
-    query: 'search http 200 | head 1000 | regex ="^/elections" | stats count AS "Auto-editor Elections"'
-    history: false
-    daily: true
-- privileged_accounts:
-    name: 'View count: Privileged User Accounts'
-    query: 'search http 200 | head 1000 | regex url="^/privileged" | stats count AS "Privileged User Accounts"'
-    history: false
-    daily: true
-- statistics:
-    name: 'View count: Statistics'
-    query: 'search http 200 | head 1000 | regex url="^/statistics" | stats count AS "Statistics"'
-    history: false
-    daily: true
-- timeline:
-    name: 'View count: Timeline Graph'
-    query: 'search http 200 | head 1000 | regex url="^/statistics/timeline" | stats count AS "Timeline Graph"'
-    history: false
-    daily: true
+categories:
+    - top_entities:
+        name: 'Top entities'
+        queries:
+            - artists:
+                name: 'Artists'
+                query: 'search http 200 | regex url="^(/ws/\d)?/artist/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" | top mbid'
+                history: true
+                daily: true
+            - release_groups:
+                name: 'Release-groups'
+                query: 'search http 200 | regex url="^(/ws/\d)?/release-group/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" | top mbid'
+                history: true
+                daily: true
+            - releases:
+                name: 'Releases'
+                query: 'search http 200 | regex url="^(/ws/\d)?/release/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" | top mbid'
+                history: true
+                daily: true
+            - recordings:
+                name: 'Recordings'
+                query: 'search http 200 | regex url="^(/ws/\d)?/(recording|track)/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" | top mbid'
+                history: true
+                daily: true
+            - works:
+                name: 'Works'
+                query: 'search http 200 | regex url="^(/ws/\d)?/work/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" | top mbid'
+                history: true
+                daily: true
+            - labels:
+                name: 'Labels'
+                query: 'search http 200 | regex url="^(/ws/\d)?/label/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" | top mbid' 
+                history: true
+                daily: true
+    - view_count:
+        name: 'View count'
+        queries:
+            - about:
+                name: 'About'
+                query: 'search http 200 | regex url="^/doc/About" | stats count AS "About"'
+                history: false
+                daily: true
+            - sponsors:
+                name: 'Sponsors'
+                query: 'search http 200 | regex url="^/doc/About/Sponsors" | stats count AS "Sponsors"'
+                history: false
+                daily: true
+            - team:
+                name: 'Team'
+                query: 'search http 200 | regex url="^/doc/About/Team" | stats count AS "Team"'
+                history: false
+                daily: true
+            - data_license:
+                name: 'Data License'
+                query: 'search http 200 | regex url="^/doc/About/Data_License" | stats count AS "Data License"'
+                history: false
+                daily: true
+            - social_contract:
+                name: 'Social Contract'
+                query: 'search http 200 | regex url="^/doc/Social_Contract" | stats count AS "Social Contract"'
+                history: false
+                daily: true
+            - code_of_conduct:
+                name: 'Code of Conduct'
+                query: 'search http 200 | regex url="^/doc/Code_of_Conduct" | stats count AS "Code of Conduct"'
+                history: false
+                daily: true
+            - privacy_policy:
+                name: 'Privacy Policy'
+                query: 'search http 200 | regex url="^/doc/About/Privacy_Policy" | stats count AS "Privacy Policy"'
+                history: false
+                daily: true
+            - auto_editor:
+                name: 'Auto-editor Elections'
+                query: 'search http 200 | regex ="^/elections" | stats count AS "Auto-editor Elections"'
+                history: false
+                daily: true
+            - privileged_accounts:
+                name: 'Privileged User Accounts'
+                query: 'search http 200 | regex url="^/privileged" | stats count AS "Privileged User Accounts"'
+                history: false
+                daily: true
+            - statistics:
+                name: 'Statistics'
+                query: 'search http 200 | regex url="^/statistics" | stats count AS "Statistics"'
+                history: false
+                daily: true
+            - timeline:
+                name: 'Timeline Graph'
+                query: 'search http 200 | regex url="^/statistics/timeline" | stats count AS "Timeline Graph"'
+                history: false
+                daily: true
