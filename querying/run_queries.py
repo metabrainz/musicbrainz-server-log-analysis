@@ -65,7 +65,7 @@ def main():
                 sys.exit(1)
             
             # Load JSON    
-            print "Processing query: %s" % splunk_query['name']
+            print "Processing query: %s: %s" % (category['name'], splunk_query['name'])
             data_json = json.loads(str(response))
             
             # Try to find mbids in the response
@@ -134,8 +134,8 @@ def main():
             
             try:        
                 # Store results in db, commit
-                db_cursor.execute("INSERT INTO log_statistic (category, report_type, data) VALUES (%s, %s, %s);",
-                    (category['name'], 'TODO', str(data)))
+                db_cursor.execute("INSERT INTO log_statistic (category, data) VALUES (%s, %s);",
+                    (category['name'], str(data)))
                 db_conn.commit()
             except Exception, e:
                 # Rollback
