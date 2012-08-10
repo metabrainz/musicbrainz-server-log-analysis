@@ -124,15 +124,23 @@ def main():
                 # Store names next to mbids in JSON
                 if 'mbid' in line:
                     if line['mbid'] in mbid_dict:
-                        line['mbid_name'] = mbid_dict[line['mbid']]
+                        line['name'] = mbid_dict[line['mbid']]
                     else:
-                        line['mbid_name'] = '{Name not found}'
+                        line['name'] = '{Name not found}'
+                    # Do not display mbids
+                    del line['mbid']
             
             # Create a wrapper for JSON data
-            data_json_wrapper = {'data': data_json, 'name': splunk_query['name']}
+            data_json_wrapper = {
+                'data': data_json, 
+                'name': splunk_query['name']}
+            
+            if splunk_query.has_key('graphing'):
+                data_json_wrapper['graphing'] = splunk_query['graphing']
+            
             data = json.dumps(data_json_wrapper)
             
-            try:        
+            try:
                 # Store results in db, commit
                 db_cursor.execute("INSERT INTO log_statistic (category, data) VALUES (%s, %s);",
                     (category['name'], str(data)))
