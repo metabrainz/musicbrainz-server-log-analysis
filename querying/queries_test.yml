@@ -7,8 +7,8 @@ categories:
                 query: 'search http 200 | head 100000 | regex url="^(/ws/\d)?/artist/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" | top 50 mbid'
                 history: true
                 daily: true
-                graphing:
-                    display: 10
+                display:
+                    limit: 10
                     mapping:
                         xaxis: '#'
                         yaxis: 'count'
@@ -18,26 +18,36 @@ categories:
                 query: 'search http 200 | head 100000 | regex url="^(/ws/\d)?/release-group/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" | top 50 mbid'
                 history: true
                 daily: true
+                display:
+                    limit: 10
             - releases:
                 name: 'Releases'
                 query: 'search http 200 | head 100000 | regex url="^(/ws/\d)?/release/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" | top 50 mbid'
                 history: true
                 daily: true
+                display:
+                    limit: 10
             - recordings:
                 name: 'Recordings'
                 query: 'search http 200 | head 100000 | regex url="^(/ws/\d)?/(recording|track)/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" | top 50 mbid'
                 history: true
                 daily: true
+                display:
+                    limit: 10
             - works:
                 name: 'Works'
                 query: 'search http 200 | head 100000 | regex url="^(/ws/\d)?/work/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" | top 50 mbid'
                 history: true
                 daily: true
+                display:
+                    limit: 10
             - labels:
                 name: 'Labels'
                 query: 'search http 200 | head 100000 | regex url="^(/ws/\d)?/label/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" | top 50 mbid' 
                 history: true
                 daily: true
+                display:
+                    limit: 10
     - top_inc_params_ws_1:
         name: 'Top inc parameters (ws/1)'
         queries:
@@ -46,31 +56,43 @@ categories:
                 query: 'search http 200 | head 100000 | regex url="^/ws/1/" | top 50 inc'
                 history: false
                 daily: true
+                display:
+                    limit: 10
             - ws_1_artist:
                 name: 'Artists'
                 query: 'search http 200 | head 100000 |regex url="^/ws/1/artist/" | top 50 inc'
                 history: false
                 daily: true
+                display:
+                    limit: 10
             - ws_1_release_group:
                 name: 'Release-groups'
                 query: 'search http 200 | head 100000 |regex url="^/ws/1/release-group/" | top 50 inc'
                 history: false
                 daily: true
+                display:
+                    limit: 10
             - ws_1_release:
                 name: 'Releases'
                 query: 'search http 200 | head 100000 |regex url="^/ws/1/release/" | top 50 inc'
                 history: false
                 daily: true
+                display:
+                    limit: 10
             - ws_1_track:
                 name: 'Tracks'
                 query: 'search http 200 | head 100000 |regex url="^/ws/1/track/" | top 50 inc'
                 history: false
                 daily: true
+                display:
+                    limit: 10
             - ws_1_label:
                 name: 'Labels'
                 query: 'search http 200 | head 100000 |regex url="^/ws/1/label/" | top 50 inc'
                 history: false
                 daily: true
+                display:
+                    limit: 10
     - top_inc_params_ws_2:
         name: 'Top inc parameters (ws/2)'
         queries:
@@ -79,157 +101,78 @@ categories:
                 query: 'search http 200 | head 100000 | regex url="^/ws/2/" | top 50 inc'
                 history: false
                 daily: true
+                display:
+                    limit: 10
             - ws_2_artist:
                 name: 'Artists'
                 query: 'search http 200 | head 100000 |regex url="^/ws/2/artist/" | top 50 inc'
                 history: false
                 daily: true
+                display:
+                    limit: 10
             - ws_2_release_group:
                 name: 'Release-groups'
                 query: 'search http 200 | head 100000 |regex url="^/ws/2/release-group/" | top 50 inc'
                 history: false
                 daily: true
+                display:
+                    limit: 10
             - ws_2_release:
                 name: 'Releases'
                 query: 'search http 200 | head 100000 |regex url="^/ws/2/release/" | top 50 inc'
                 history: false
                 daily: true
+                display:
+                    limit: 10
             - ws_2_recording:
                 name: 'Recordings'
                 query: 'search http 200 | head 100000 |regex url="^/ws/2/recording/" | top 50 inc'
                 history: false
                 daily: true
+                display:
+                    limit: 10
             - ws_2_work:
                 name: 'Works'
                 query: 'search http 200 | head 100000 |regex url="^/ws/2/work/" | top 50 inc'
                 history: false
                 daily: true
+                display:
+                    limit: 10
             - ws_2_label:
                 name: 'Labels'
                 query: 'search http 200 | head 100000 |regex url="^/ws/2/label/" | top 50 inc'
                 history: false
                 daily: true
-    - entities_searched_ws_1:
-        name: 'Entities being searched (ws/1)'
+                display:
+                    limit: 10
+    - entities_searched:
+        name: 'Entities being searched'
         queries:
-            - artist:
-                name: 'Artists'
-                query: 'search http 200 | head 100000 | regex url="^/ws/1/artist/" | regex query=".*" | stats count'
+            - ws_1:
+                name: 'Web Service 1'
+                query: 'search http 200 | head 100000 | regex url="^/ws/1/artist/" | regex query=".*" | stats count | eval name="Artists" | fields name, count
+                        | append [search http 200 | head 100000 | regex url="^/ws/1/release-group/" | regex query=".*" | stats count | eval name="Release-groups" | fields name, count]
+                        | append [search http 200 | head 100000 | regex url="^/ws/1/release/" | regex query=".*" | stats count | eval name="Releases" | fields name, count]
+                        | append [search http 200 | head 100000 | regex url="^/ws/1/track/" | regex query=".*" | stats count | eval name="Tracks" | fields name, count]
+                        | append [search http 200 | head 100000 | regex url="^/ws/1/label/" | regex query=".*" | stats count | eval name="Labels" | fields name, count]'
                 history: false
                 daily: true
-            - release_group:
-                name: 'Release-groups'
-                query: 'search http 200 | head 100000 | regex url="^/ws/1/release-group/" | regex query=".*" | stats count'
+                display:
+                    limit: 5
+            - ws_2:
+                name: 'Web Service 2'
+                query: 'search http 200 | head 100000 | regex url="^/ws/2/artist/" | regex query=".*" | stats count | eval name="Artists" | fields name, count
+                        | append [search http 200 | head 100000 | regex url="^/ws/2/release-group/" | regex query=".*" | stats count | eval name="Release-groups" | fields name, count]
+                        | append [search http 200 | head 100000 | regex url="^/ws/2/release/" | regex query=".*" | stats count | eval name="Releases" | fields name, count]
+                        | append [search http 200 | head 100000 | regex url="^/ws/2/recording/" | regex query=".*" | stats count | eval name="Recordings" | fields name, count]
+                        | append [search http 200 | head 100000 | regex url="^/ws/2/work/" | regex query=".*" | stats count | eval name="Works" | fields name, count]
+                        | append [search http 200 | head 100000 | regex url="^/ws/2/label/" | regex query=".*" | stats count | eval name="Labels" | fields name, count]'
                 history: false
                 daily: true
-            - release:
-                name: 'Releases'
-                query: 'search http 200 | head 100000 | regex url="^/ws/1/release/" | regex query=".*" | stats count'
-                history: false
-                daily: true
-            - track:
-                name: 'Tracks'
-                query: 'search http 200 | head 100000 | regex url="^/ws/1/track/" | regex query=".*" | stats count'
-                history: false
-                daily: true
-            - label:
-                name: 'Labels'
-                query: 'search http 200 | head 100000 | regex url="^/ws/1/label/" | regex query=".*" | stats count'
-                history: false
-                daily: true
-    - entities_searched_ws_2:
-        name: 'Entities being searched (ws/2)'
-        queries:
-            - artist:
-                name: 'Artists'
-                query: 'search http 200 | head 100000 | regex url="^/ws/2/artist/" | regex query=".*" | stats count'
-                history: false
-                daily: true
-            - release_group:
-                name: 'Release-groups'
-                query: 'search http 200 | head 100000 | regex url="^/ws/2/release-group/" | regex query=".*" | stats count'
-                history: false
-                daily: true
-            - release:
-                name: 'Releases'
-                query: 'search http 200 | head 100000 | regex url="^/ws/2/release/" | regex query=".*" | stats count'
-                history: false
-                daily: true
-            - recording:
-                name: 'Recordings'
-                query: 'search http 200 | head 100000 | regex url="^/ws/2/recording/" | regex query=".*" | stats count'
-                history: false
-                daily: true
-            - work:
-                name: 'Works'
-                query: 'search http 200 | head 100000 | regex url="^/ws/2/work/" | regex query=".*" | stats count'
-                history: false
-                daily: true
-            - label:
-                name: 'Labels'
-                query: 'search http 200 | head 100000 | regex url="^/ws/2/label/" | regex query=".*" | stats count'
-                history: false
-                daily: true
-#    - view_count:
-#        name: 'View count'
-#        queries:
-#            - about:
-#                name: 'About'
-#                query: 'search http 200 | head 100000 | regex url="^/doc/About" | stats count AS "About"'
-#                history: false
-#                daily: true
-#            - sponsors:
-#                name: 'Sponsors'
-#                query: 'search http 200 | head 100000 | regex url="^/doc/About/Sponsors" | stats count AS "Sponsors"'
-#                history: false
-#                daily: true
-#            - team:
-#                name: 'Team'
-#                query: 'search http 200 | head 100000 | regex url="^/doc/About/Team" | stats count AS "Team"'
-#                history: false
-#                daily: true
-#            - data_license:
-#                name: 'Data License'
-#                query: 'search http 200 | head 100000 | regex url="^/doc/About/Data_License" | stats count AS "Data License"'
-#                history: false
-#                daily: true
-#            - social_contract:
-#                name: 'Social Contract'
-#                query: 'search http 200 | head 100000 | regex url="^/doc/Social_Contract" | stats count AS "Social Contract"'
-#                history: false
-#                daily: true
-#            - code_of_conduct:
-#                name: 'Code of Conduct'
-#                query: 'search http 200 | head 100000 | regex url="^/doc/Code_of_Conduct" | stats count AS "Code of Conduct"'
-#                history: false
-#                daily: true
-#            - privacy_policy:
-#                name: 'Privacy Policy'
-#                query: 'search http 200 | head 100000 | regex url="^/doc/About/Privacy_Policy" | stats count AS "Privacy Policy"'
-#                history: false
-#                daily: true
-#            - auto_editor:
-#                name: 'Auto-editor Elections'
-#                query: 'search http 200 | head 100000 | regex ="^/elections" | stats count AS "Auto-editor Elections"'
-#                history: false
-#                daily: true
-#            - privileged_accounts:
-#                name: 'Privileged User Accounts'
-#                query: 'search http 200 | head 100000 | regex url="^/privileged" | stats count AS "Privileged User Accounts"'
-#                history: false
-#                daily: true
-#            - statistics:
-#                name: 'Statistics'
-#                query: 'search http 200 | head 100000 | regex url="^/statistics" | stats count AS "Statistics"'
-#                history: false
-#                daily: true
-#            - timeline:
-#                name: 'Timeline Graph'
-#                query: 'search http 200 | head 100000 | regex url="^/statistics/timeline" | stats count AS "Timeline Graph"'
-#                history: false
-#                daily: true
-    - view_count_test:
-        name: 'View count (test)'
+                display:
+                    limit: 6
+    - view_count:
+        name: 'View count'
         queries:
             - about_menu:
                 name: 'About menu'
@@ -246,8 +189,8 @@ categories:
                         | append [search http 200 | head 100000 | regex url="^/statistics/timeline" | stats count | eval name="Timeline Graph" | fields name, count]'
                 history: false
                 daily: true
-                graphing:
-                    display: 11
+                display:
+                    limit: 11
                     mapping:
                         xaxis: '#'
                         yaxis: 'count'
@@ -267,8 +210,8 @@ categories:
                         | append [search http 200 | head 50000 | regex url="^/doc/FreeDB_Gateway" | stats count | eval name="FreeDB Gateway" | fields name, count]'
                 history: false
                 daily: true
-                graphing:
-                    display: 11
+                display:
+                    limit: 11
                     mapping:
                         xaxis: '#'
                         yaxis: 'count'
@@ -282,8 +225,8 @@ categories:
                         | append [search http 200 | head 50000 | regex url="^/cdstub/browse" | stats count | eval name="Top CD Stubs" | fields name, count]'
                 history: false
                 daily: true
-                graphing:
-                    display: 5
+                display:
+                    limit: 5
                     mapping:
                         xaxis: '#'
                         yaxis: 'count'
