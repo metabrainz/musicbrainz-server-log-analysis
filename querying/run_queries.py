@@ -92,20 +92,20 @@ def main():
                 
                 # Mapping of entity tables, and name tables
                 entity_tables = {
-                    'artist': 'artist_name',
-                    'release_group': 'release_name',
-                    'release': 'release_name',
-                    'recording': 'track_name',
-                    'work': 'work_name',
-                    'label': 'label_name'
+                    'artist'        : 'artist_name',
+                    'release_group' : 'release_name',
+                    'release'       : 'release_name',
+                    'recording'     : 'track_name',
+                    'work'          : 'work_name',
+                    'label'         : 'label_name'
                 }
                 redirect_tables = {
-                    'artist_gid_redirect': 'artist_name',
-                    'release_group_gid_redirect': 'release_name',
-                    'release_gid_redirect': 'release_name',
-                    'recording_gid_redirect': 'track_name',
-                    'work_gid_redirect': 'work_name',
-                    'label_gid_redirect': 'label_name',
+                    'artist_gid_redirect'        : 'artist_name',
+                    'release_group_gid_redirect' : 'release_name',
+                    'release_gid_redirect'       : 'release_name',
+                    'recording_gid_redirect'     : 'track_name',
+                    'work_gid_redirect'          : 'work_name',
+                    'label_gid_redirect'         : 'label_name',
                 }
                 
                 # Store mbid - name pairs in a dict
@@ -132,11 +132,9 @@ def main():
             
             # Create a wrapper for JSON data
             data_json_wrapper = {
-                'data': data_json, 
-                'name': splunk_query['name']}
-            
-            if splunk_query.has_key('graphing'):
-                data_json_wrapper['graphing'] = splunk_query['graphing']
+                'data'    : data_json, 
+                'name'    : splunk_query['name'],
+                'display' : splunk_query['display']}
             
             data = json.dumps(data_json_wrapper)
             
