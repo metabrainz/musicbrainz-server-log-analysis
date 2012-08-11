@@ -6,12 +6,20 @@ import sys, utils, json, yaml, config
 from splunklib.client import connect
 from splunklib.binding import HTTPError
 
+# Test mode, and YAML files
 TEST_MODE = True
+QUERIES = 'queries.yml'
+QUERIES_TEST = 'queries_test.yml'
+ENTITY_TABLES = 'entity_tables.yml'
 
-def look_up_mbid_list(mbid_list, mbid_dict, query_template, table_mapping, cursor):
-    for table, name_table in table_mapping.iteritems():
+def look_up_mbid_list(mbid_list, mbid_dict, query_template, entity_tables, table_key, cursor):
+    for entity_dict in entity_tables['entity_tables']:
+        entity = entity_dict.values()[0]
+        
         if mbid_list:
-            lookup_query = query_template % (table, name_table, "%s")
+            # Look up id in table with the given key (entity or redirect)
+            # Look up name in table specified by name_table
+            lookup_query = query_template % (entity[table_key], entity['name_table'], "%s")
             
             try:
                 cursor.execute(lookup_query, (tuple(mbid_list),))
@@ -20,19 +28,26 @@ def look_up_mbid_list(mbid_list, mbid_dict, query_template, table_mapping, curso
                 print e.pgerror
                 sys.exit(1)
             
+            # 0: mbid, 1: name
             for record in cursor.fetchall():
-                # TODO: enable dict access, with string indices
-                mbid_dict[record[0]] = record[1]
+                mbid_dict[record[0]] = {
+                    'name': record[1],
+                    'entity': entity['name']
+                }
                 mbid_list.remove(record[0])
 
 def main():
 
     # Parse the YAML file that contains queries
     if TEST_MODE:
-        file = open('queries_test.yml')
+        file = open(QUERIES_TEST)
     else:
-        file = open('queries.yml')
+        file = open(QUERIES)
     queries = yaml.load(file.read())
+    
+    # Parse YAML file for entity name and redirect tables
+    file = open(ENTITY_TABLES)
+    entity_tables = yaml.load(file.read())
     
     # Connect to splunk
     try:
@@ -66,14 +81,17 @@ def main():
             
             # Load JSON    
             print "Processing query: %s: %s" % (category['name'], splunk_query['name'])
-            data_json = json.loads(str(response))
+            try:
+                data_json = json.loads(str(response))
+            except ValueError, e:
+                print "Warning: no results returned for query '%s'" % splunk_query['name']
+                data_json = [{'message': 'No results found'}]
             
             # Try to find mbids in the response
             mbid_list = []
             for line in data_json:
                 if 'mbid' in line:
                     mbid_list.append(line['mbid'])
-            
             if mbid_list:
                 # Form query to find names for mbids
                 entity_query_template = """
@@ -90,43 +108,36 @@ def main():
                     and x_r.new_id = x_n.id
                 """
                 
-                # Mapping of entity tables, and name tables
-                entity_tables = {
-                    'artist'        : 'artist_name',
-                    'release_group' : 'release_name',
-                    'release'       : 'release_name',
-                    'recording'     : 'track_name',
-                    'work'          : 'work_name',
-                    'label'         : 'label_name'
-                }
-                redirect_tables = {
-                    'artist_gid_redirect'        : 'artist_name',
-                    'release_group_gid_redirect' : 'release_name',
-                    'release_gid_redirect'       : 'release_name',
-                    'recording_gid_redirect'     : 'track_name',
-                    'work_gid_redirect'          : 'work_name',
-                    'label_gid_redirect'         : 'label_name',
-                }
-                
-                # Store mbid - name pairs in a dict
+                # Store name and entity type for mbids
                 mbid_dict = {}
-                look_up_mbid_list(mbid_list, mbid_dict, entity_query_template, entity_tables, db_cursor)
+                look_up_mbid_list(mbid_list, mbid_dict, entity_query_template, entity_tables, 'entity_table', db_cursor)
                             
                 # Try to look up tables/ids with redirect tables   
                 # for mbids that weren't found in "normal" tables
-                look_up_mbid_list(mbid_list, mbid_dict, redirect_query_template, redirect_tables, db_cursor)
+                look_up_mbid_list(mbid_list, mbid_dict, redirect_query_template, entity_tables, 'redirect_table', db_cursor)
                         
+            # Filter data where it's needed
+            if splunk_query.has_key('filter'):
+                for filter_dict in splunk_query['filter']:
+                    filter = filter_dict.values()[0]
+                    data_json = [line for line in data_json if line[filter['column']] not in filter['values']]
+            
             for line in data_json:
+                
                 # Remove "private" key-value pairs
                 for key in line.keys():
                     if key.startswith('_'):
                         line.pop(key)
-                # Store names next to mbids in JSON
+                        
+                # Store names instead of mbids in JSON
                 if 'mbid' in line:
                     if line['mbid'] in mbid_dict:
-                        line['name'] = mbid_dict[line['mbid']]
+                        # Create a link to the entity here
+                        link = '<a href="/%s/%s">%s</a>'
+                        line['name'] = link % (mbid_dict[line['mbid']]['entity'], line['mbid'], mbid_dict[line['mbid']]['name'].decode('utf-8'))
                     else:
-                        line['name'] = '{Name not found}'
+                        # If name was not found, display the mbid
+                        line['name'] = '[%s]' % line['mbid']
                     # Do not display mbids
                     del line['mbid']
             

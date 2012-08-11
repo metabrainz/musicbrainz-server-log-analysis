@@ -13,6 +13,17 @@ categories:
                         xaxis: '#'
                         yaxis: 'count'
                         type: 'bar'
+                filter:
+                    - unknown_artists:
+                        column: 'mbid'
+                        values:
+                            - 'f92c4ae1-fc81-4c54-b1b6-336cc0a1f338'
+                            - '4d307588-7e57-4032-bde6-5f217fc09b2a'
+                            - '125ec42a-7229-4250-afc5-e057484327fe'
+                            - '42931979-e2b8-4c1d-895f-cd6cd86ae69d'
+                            - '60f7d020-9580-47c5-8839-a4f25659687d'
+                            - 'a3866930-01d3-4988-bfb0-9378306e5cb5'
+                            - '222d1430-c367-4d57-84c9-5c8e4ed37d53'
             - release_groups:
                 name: 'Release-groups'
                 query: 'search http 200 | head 100000 | regex url="^(/ws/\d)?/release-group/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" | top 50 mbid'
@@ -34,6 +45,11 @@ categories:
                 daily: true
                 display:
                     limit: 10
+                filter:
+                    - please_mister_nagios:
+                        column: 'mbid'
+                        values:
+                            - '9a8168c1-7475-42ea-89e5-ec306b660b6c'
             - works:
                 name: 'Works'
                 query: 'search http 200 | head 100000 | regex url="^(/ws/\d)?/work/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" | top 50 mbid'
@@ -60,35 +76,35 @@ categories:
                     limit: 10
             - ws_1_artist:
                 name: 'Artists'
-                query: 'search http 200 | head 100000 |regex url="^/ws/1/artist/" | top 50 inc'
+                query: 'search http 200 | head 100000 | regex url="^/ws/1/artist/" | top 50 inc'
                 history: false
                 daily: true
                 display:
                     limit: 10
             - ws_1_release_group:
                 name: 'Release-groups'
-                query: 'search http 200 | head 100000 |regex url="^/ws/1/release-group/" | top 50 inc'
+                query: 'search http 200 | head 100000 | regex url="^/ws/1/release-group/" | top 50 inc'
                 history: false
                 daily: true
                 display:
                     limit: 10
             - ws_1_release:
                 name: 'Releases'
-                query: 'search http 200 | head 100000 |regex url="^/ws/1/release/" | top 50 inc'
+                query: 'search http 200 | head 100000 | regex url="^/ws/1/release/" | top 50 inc'
                 history: false
                 daily: true
                 display:
                     limit: 10
             - ws_1_track:
                 name: 'Tracks'
-                query: 'search http 200 | head 100000 |regex url="^/ws/1/track/" | top 50 inc'
+                query: 'search http 200 | head 100000 | regex url="^/ws/1/track/" | top 50 inc'
                 history: false
                 daily: true
                 display:
                     limit: 10
             - ws_1_label:
                 name: 'Labels'
-                query: 'search http 200 | head 100000 |regex url="^/ws/1/label/" | top 50 inc'
+                query: 'search http 200 | head 100000 | regex url="^/ws/1/label/" | top 50 inc'
                 history: false
                 daily: true
                 display:
@@ -105,42 +121,42 @@ categories:
                     limit: 10
             - ws_2_artist:
                 name: 'Artists'
-                query: 'search http 200 | head 100000 |regex url="^/ws/2/artist/" | top 50 inc'
+                query: 'search http 200 | head 100000 | regex url="^/ws/2/artist/" | top 50 inc'
                 history: false
                 daily: true
                 display:
                     limit: 10
             - ws_2_release_group:
                 name: 'Release-groups'
-                query: 'search http 200 | head 100000 |regex url="^/ws/2/release-group/" | top 50 inc'
+                query: 'search http 200 | head 100000 | regex url="^/ws/2/release-group/" | top 50 inc'
                 history: false
                 daily: true
                 display:
                     limit: 10
             - ws_2_release:
                 name: 'Releases'
-                query: 'search http 200 | head 100000 |regex url="^/ws/2/release/" | top 50 inc'
+                query: 'search http 200 | head 100000 | regex url="^/ws/2/release/" | top 50 inc'
                 history: false
                 daily: true
                 display:
                     limit: 10
             - ws_2_recording:
                 name: 'Recordings'
-                query: 'search http 200 | head 100000 |regex url="^/ws/2/recording/" | top 50 inc'
+                query: 'search http 200 | head 100000 | regex url="^/ws/2/recording/" | top 50 inc'
                 history: false
                 daily: true
                 display:
                     limit: 10
             - ws_2_work:
                 name: 'Works'
-                query: 'search http 200 | head 100000 |regex url="^/ws/2/work/" | top 50 inc'
+                query: 'search http 200 | head 100000 | regex url="^/ws/2/work/" | top 50 inc'
                 history: false
                 daily: true
                 display:
                     limit: 10
             - ws_2_label:
                 name: 'Labels'
-                query: 'search http 200 | head 100000 |regex url="^/ws/2/label/" | top 50 inc'
+                query: 'search http 200 | head 100000 | regex url="^/ws/2/label/" | top 50 inc'
                 history: false
                 daily: true
                 display:
