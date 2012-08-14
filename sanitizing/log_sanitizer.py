@@ -1,5 +1,5 @@
 #!/usr/bin/python
-import sys, getopt, re, hashlib
+import sys, getopt, re, hashlib, base64
 
 # Salts used for the SHA-1 hash
 salt = {'ip' : 'change me!',
@@ -31,8 +31,16 @@ regex = [{'exp': '/user/(?P<username>[^\? /]+)',
          {'exp': '(\?|&)conditions\.(\d)+\.args\.(\d)+=(?P<userid>\d+)',
           'field' : 'userid'}]
 		  
+hash_memo = {}
 def hash(salt, value):
-    return hashlib.sha1(salt + value).hexdigest()
+    global hash_memo
+    key = salt + value
+    if key not in hash_memo:
+        hash_memo[key] = do_hash(key)
+    return hash_memo[key]
+
+def do_hash(key):
+    return base64.b64encode_urlsafe(hashlib.sha1(key).digest())
 
 # Replace function for re.sub()
 # Takes the named group for the given field
