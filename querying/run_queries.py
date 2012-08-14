@@ -7,7 +7,7 @@ from splunklib.client import connect
 from splunklib.binding import HTTPError
 
 # Test mode, and YAML files
-TEST_MODE = True
+TEST_MODE = False
 QUERIES = 'queries.yml'
 QUERIES_TEST = 'queries_test.yml'
 ENTITY_TABLES = 'entity_tables.yml'
@@ -128,7 +128,11 @@ def main():
                 for key in line.keys():
                     if key.startswith('_'):
                         line.pop(key)
-                        
+                
+                # Correct percent rounding to maximum 2 decimal places
+                if 'percent' in line:
+                    line['percent'] = str(round(float(line['percent']), 2))
+                
                 # Store names instead of mbids in JSON
                 if 'mbid' in line:
                     if line['mbid'] in mbid_dict:
