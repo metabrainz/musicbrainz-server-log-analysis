@@ -40,7 +40,7 @@ def hash(salt, value):
     return hash_memo[key]
 
 def do_hash(key):
-    return base64.b64encode_urlsafe(hashlib.sha1(key).digest())
+    return base64.urlsafe_b64encode(hashlib.sha1(key).digest())
 
 # Replace function for re.sub()
 # Takes the named group for the given field
@@ -58,9 +58,23 @@ def main(stdin=sys.stdin, stdout=sys.stdout):
 
     # Read input
     for line in stdin:
-        # Split line into: timestamp, ip, http method, rest of line
-        [timestamp, ip, http_method, url, rest] = line.split(' ', 4)
-
+        # Split line to parts.
+        [
+            timestamp,
+            ip,
+            http_method,
+            url,
+            http_version,
+            http_response,
+            page_size,
+            z,
+            up,
+            ms,
+            ums,
+            ol,
+            h
+        ] = line.strip().split(' ')
+        
         # Hash IP
         ip_hash = hash(salt['ip'], ip)
 
@@ -70,7 +84,19 @@ def main(stdin=sys.stdin, stdout=sys.stdout):
             url = r['exp'].sub(replace(r['field']), url)
 
         # Print line
-        stdout.write('%s %s %s %s %s' % (timestamp, ip_hash, http_method, url, rest))
+        # Remove some fields that we don't need to decrease size
+        # Extra quote needed, because http_version (HTTP/1.1") was removed
+        new_line = '%s %s %s %s" %s %s %s %s' % (
+            timestamp,
+            ip,
+            http_method,
+            url,
+            http_response,
+            page_size,
+            z,
+            ums
+        )
+        stdout.write(new_line)
 
 if __name__ == "__main__":
     main()
