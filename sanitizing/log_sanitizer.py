@@ -86,9 +86,9 @@ def main(stdin=sys.stdin, stdout=sys.stdout):
         # Print line
         # Remove some fields that we don't need to decrease size
         # Extra quote needed, because http_version (HTTP/1.1") was removed
-        new_line = '%s %s %s %s" %s %s %s %s' % (
+        new_line = '%s %s %s %s" %s %s %s %s\n' % (
             timestamp,
-            ip,
+            ip_hash,
             http_method,
             url,
             http_response,
