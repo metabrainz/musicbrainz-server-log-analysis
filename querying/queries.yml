@@ -12,7 +12,7 @@ categories:
                     mapping:
                         xaxis: '#'
                         yaxis: 'count'
-                        type: 'bar'
+                        type: 'bars'
                 filter:
                     - unknown_artists:
                         column: 'mbid'
@@ -24,6 +24,7 @@ categories:
                             - '60f7d020-9580-47c5-8839-a4f25659687d'
                             - 'a3866930-01d3-4988-bfb0-9378306e5cb5'
                             - '222d1430-c367-4d57-84c9-5c8e4ed37d53'
+                            - '89ad4ac3-39f7-470e-963a-56509c546377'
             - release_groups:
                 name: 'Release-groups'
                 query: 'search http 200 | regex url="^(/ws/\d)?/release-group/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" | top 50 mbid'
@@ -31,6 +32,10 @@ categories:
                 daily: true
                 display:
                     limit: 10
+                    mapping:
+                        xaxis: '#'
+                        yaxis: 'count'
+                        type: 'bars'
             - releases:
                 name: 'Releases'
                 query: 'search http 200 | regex url="^(/ws/\d)?/release/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" | top 50 mbid'
@@ -38,6 +43,10 @@ categories:
                 daily: true
                 display:
                     limit: 10
+                    mapping:
+                        xaxis: '#'
+                        yaxis: 'count'
+                        type: 'bars'
             - recordings:
                 name: 'Recordings'
                 query: 'search http 200 | regex url="^(/ws/\d)?/(recording|track)/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" | top 50 mbid'
@@ -45,6 +54,10 @@ categories:
                 daily: true
                 display:
                     limit: 10
+                    mapping:
+                        xaxis: '#'
+                        yaxis: 'count'
+                        type: 'bars'
                 filter:
                     - please_mister_nagios:
                         column: 'mbid'
@@ -57,6 +70,10 @@ categories:
                 daily: true
                 display:
                     limit: 10
+                    mapping:
+                        xaxis: '#'
+                        yaxis: 'count'
+                        type: 'bars'
             - labels:
                 name: 'Labels'
                 query: 'search http 200 | regex url="^(/ws/\d)?/label/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" | top 50 mbid' 
@@ -64,6 +81,10 @@ categories:
                 daily: true
                 display:
                     limit: 10
+                    mapping:
+                        xaxis: '#'
+                        yaxis: 'count'
+                        type: 'bars'
     - top_inc_params_ws_1:
         name: 'Top inc parameters (ws/1)'
         queries:
@@ -208,9 +229,9 @@ categories:
                 display:
                     limit: 11
                     mapping:
-                        xaxis: '#'
+                        xaxis: 'name'
                         yaxis: 'count'
-                        type: 'bar'
+                        type: 'pie'
             - products_menu:
                 name: 'Product menu'
                 query: 'search http 200 | regex url="^/doc/Products" | stats count | eval name="Products" | fields name, count 
@@ -229,9 +250,9 @@ categories:
                 display:
                     limit: 11
                     mapping:
-                        xaxis: '#'
+                        xaxis: 'name'
                         yaxis: 'count'
-                        type: 'bar'
+                        type: 'pie'
             - search_menu:
                 name: 'Search menu'
                 query: 'search http 200 | regex url="^/search" | stats count | eval name="Search" | fields name, count 
@@ -244,6 +265,6 @@ categories:
                 display:
                     limit: 5
                     mapping:
-                        xaxis: '#'
+                        xaxis: 'name'
                         yaxis: 'count'
-                        type: 'bar'
+                        type: 'pie'
