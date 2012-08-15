@@ -63,7 +63,7 @@ def replace(field):
         return matchobj.group(0).replace(matchobj.group(field), new_hash)
     return replace_string
 
-def main(stdin=sys.stdin, stdout=sys.stdout):
+def main(stdin=sys.stdin, stdout=sys.stdout, stderr=sys.stderr):
     # Compile regexes
     for r in regex:
         r['exp'] = re.compile(r['exp'])
@@ -86,9 +86,10 @@ def main(stdin=sys.stdin, stdout=sys.stdout):
                 ums,
                 ol,
                 h
-            ] = line.strip().split(' ')
+            ] = line.strip().split()
         except ValueError, e:
-            print line
+            sys.stderr(line + "\n")
+	    sys.exit(-1)
         
         # Hash IP
         ip_hash = hash(salt['ip'], ip)
