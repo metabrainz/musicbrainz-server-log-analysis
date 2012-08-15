@@ -17,12 +17,7 @@
 #    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import sys, getopt, re, hashlib, base64
-
-# Salts used for the SHA-1 hash
-salt = {'ip' : 'change me!',
-        'username' : 'change me!',
-        'userid' : 'change me!',
-        'email' : 'change me!'}
+from salts import salt
 
 # List containing dicts of regexes that find sensitive data, 
 # and field names that refer to regex fields and salts
