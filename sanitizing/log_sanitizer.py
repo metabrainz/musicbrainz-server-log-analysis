@@ -76,21 +76,24 @@ def main(stdin=sys.stdin, stdout=sys.stdout):
     # Read input
     for line in stdin:
         # Split line to parts.
-        [
-            timestamp,
-            ip,
-            http_method,
-            url,
-            http_version,
-            http_response,
-            page_size,
-            z,
-            up,
-            ms,
-            ums,
-            ol,
-            h
-        ] = line.strip().split(' ')
+        try:
+            [
+                timestamp,
+                ip,
+                http_method,
+                url,
+                http_version,
+                http_response,
+                page_size,
+                z,
+                up,
+                ms,
+                ums,
+                ol,
+                h
+            ] = line.strip().split(' ')
+        except ValueError, e:
+            print line
         
         # Hash IP
         ip_hash = hash(salt['ip'], ip)
