@@ -78,8 +78,6 @@ class TestSanitizer(unittest.TestCase):
             # Get output
             output = stdout.getvalue().strip()
 
-            print output
-            
             # Check whether sensitive data was replaced
             self.assertEqual(output.find(self.input_list[i]['sensitive']), -1)
 
