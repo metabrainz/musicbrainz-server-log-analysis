@@ -1,4 +1,21 @@
 #!/usr/bin/python
+
+#    Copyright (C) 2012 Daniel Bali
+#
+#    This program is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program; if not, write to the Free Software
+#    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
 import random
 import unittest
 from StringIO import StringIO
@@ -12,7 +29,7 @@ class TestSanitizer(unittest.TestCase):
         # Create input data templates
         template = {
             'username' : [
-                Template("""1000000000.000 127.0.0.1 "GET /user/${username}/edits/open?page=1 HTTP/1.1" 200 9202 z=- up=10.1.1.20:80 ms=2.956 ums=2.956 ol=- h=musicbrainz.org"""),
+                Template("""1000000000.000 127.0.0.1 "GET /user/${username}/edits/open?page=1 HTTP/1.1" 200 9202 z=- up=10.1.1.20:80 ms=2.956 ums=2.956 ol=- h=musicbrainz.org """),
                 Template("""1000000000.000 127.0.0.1 "GET /search/edits?auto_edit_filter=&order=asc&negation=0&combinator=and&conditions.0.field=vote&conditions.0.operator=%3D&conditions.0.voter_id=1234567890&conditions.0.args=no&conditions.1.field=artist&conditions.1.operator=subscribed&conditions.1.name=&conditions.1.=&conditions.1.args.0=&conditions.1.user_id=1234567890&conditions.2.field=status&conditions.2.operator=%3D&conditions.2.args=1&conditions.3.field=editor&conditions.3.operator=!%3D&conditions.3.name=${username}&conditions.3.=&conditions.3.args.0=1234567890&field=Please+choose+a+condition HTTP/1.1" 200 35410 z=9.25 up=10.1.1.17:80 ms=8.376 ums=8.220 ol=- h=musicbrainz.org """)
             ],
             'userid' : [
@@ -61,6 +78,8 @@ class TestSanitizer(unittest.TestCase):
             # Get output
             output = stdout.getvalue().strip()
 
+            print output
+            
             # Check whether sensitive data was replaced
             self.assertEqual(output.find(self.input_list[i]['sensitive']), -1)
 
