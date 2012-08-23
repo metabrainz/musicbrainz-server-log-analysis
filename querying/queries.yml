@@ -4,7 +4,7 @@ categories:
         queries:
             - artists:
                 name: 'Artists'
-                query: 'search 200 | regex url="^(/ws/\d)?/artist/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" | top 50 mbid'
+                query: 'search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^(/ws/\d)?/artist/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" | top 50 mbid'
                 history: true
                 daily: true
                 display:
@@ -27,7 +27,7 @@ categories:
                             - '89ad4ac3-39f7-470e-963a-56509c546377'
             - release_groups:
                 name: 'Release-groups'
-                query: 'search 200 | regex url="^(/ws/\d)?/release-group/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" | top 50 mbid'
+                query: 'search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^(/ws/\d)?/release-group/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" | top 50 mbid'
                 history: true
                 daily: true
                 display:
@@ -38,7 +38,7 @@ categories:
                         type: 'bars'
             - releases:
                 name: 'Releases'
-                query: 'search 200 | regex url="^(/ws/\d)?/release/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" | top 50 mbid'
+                query: 'search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^(/ws/\d)?/release/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" | top 50 mbid'
                 history: true
                 daily: true
                 display:
@@ -49,7 +49,7 @@ categories:
                         type: 'bars'
             - recordings:
                 name: 'Recordings'
-                query: 'search 200 | regex url="^(/ws/\d)?/(recording|track)/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" | top 50 mbid'
+                query: 'search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^(/ws/\d)?/(recording|track)/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" | top 50 mbid'
                 history: true
                 daily: true
                 display:
@@ -65,7 +65,7 @@ categories:
                             - '9a8168c1-7475-42ea-89e5-ec306b660b6c'
             - works:
                 name: 'Works'
-                query: 'search 200 | regex url="^(/ws/\d)?/work/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" | top 50 mbid'
+                query: 'search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^(/ws/\d)?/work/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" | top 50 mbid'
                 history: true
                 daily: true
                 display:
@@ -76,7 +76,7 @@ categories:
                         type: 'bars'
             - labels:
                 name: 'Labels'
-                query: 'search 200 | regex url="^(/ws/\d)?/label/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" | top 50 mbid' 
+                query: 'search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^(/ws/\d)?/label/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" | top 50 mbid' 
                 history: true
                 daily: true
                 display:
@@ -90,42 +90,42 @@ categories:
         queries:
             - sum:
                 name: 'Summary'
-                query: 'search 200 | regex url="^/ws/1/" | top 50 inc'
+                query: 'search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/ws/1/" | top 50 inc'
                 history: false
                 daily: true
                 display:
                     limit: 10
             - ws_1_artist:
                 name: 'Artists'
-                query: 'search 200 | regex url="^/ws/1/artist/" | top 50 inc'
+                query: 'search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/ws/1/artist/" | top 50 inc'
                 history: false
                 daily: true
                 display:
                     limit: 10
             - ws_1_release_group:
                 name: 'Release-groups'
-                query: 'search 200 | regex url="^/ws/1/release-group/" | top 50 inc'
+                query: 'search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/ws/1/release-group/" | top 50 inc'
                 history: false
                 daily: true
                 display:
                     limit: 10
             - ws_1_release:
                 name: 'Releases'
-                query: 'search 200 | regex url="^/ws/1/release/" | top 50 inc'
+                query: 'search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/ws/1/release/" | top 50 inc'
                 history: false
                 daily: true
                 display:
                     limit: 10
             - ws_1_track:
                 name: 'Tracks'
-                query: 'search 200 | regex url="^/ws/1/track/" | top 50 inc'
+                query: 'search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/ws/1/track/" | top 50 inc'
                 history: false
                 daily: true
                 display:
                     limit: 10
             - ws_1_label:
                 name: 'Labels'
-                query: 'search 200 | regex url="^/ws/1/label/" | top 50 inc'
+                query: 'search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/ws/1/label/" | top 50 inc'
                 history: false
                 daily: true
                 display:
@@ -135,49 +135,49 @@ categories:
         queries:
             - sum:
                 name: 'Summary'
-                query: 'search 200 | regex url="^/ws/2/" | top 50 inc'
+                query: 'search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/ws/2/" | top 50 inc'
                 history: false
                 daily: true
                 display:
                     limit: 10
             - ws_2_artist:
                 name: 'Artists'
-                query: 'search 200 | regex url="^/ws/2/artist/" | top 50 inc'
+                query: 'search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/ws/2/artist/" | top 50 inc'
                 history: false
                 daily: true
                 display:
                     limit: 10
             - ws_2_release_group:
                 name: 'Release-groups'
-                query: 'search 200 | regex url="^/ws/2/release-group/" | top 50 inc'
+                query: 'search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/ws/2/release-group/" | top 50 inc'
                 history: false
                 daily: true
                 display:
                     limit: 10
             - ws_2_release:
                 name: 'Releases'
-                query: 'search 200 | regex url="^/ws/2/release/" | top 50 inc'
+                query: 'search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/ws/2/release/" | top 50 inc'
                 history: false
                 daily: true
                 display:
                     limit: 10
             - ws_2_recording:
                 name: 'Recordings'
-                query: 'search 200 | regex url="^/ws/2/recording/" | top 50 inc'
+                query: 'search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/ws/2/recording/" | top 50 inc'
                 history: false
                 daily: true
                 display:
                     limit: 10
             - ws_2_work:
                 name: 'Works'
-                query: 'search 200 | regex url="^/ws/2/work/" | top 50 inc'
+                query: 'search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/ws/2/work/" | top 50 inc'
                 history: false
                 daily: true
                 display:
                     limit: 10
             - ws_2_label:
                 name: 'Labels'
-                query: 'search 200 | regex url="^/ws/2/label/" | top 50 inc'
+                query: 'search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/ws/2/label/" | top 50 inc'
                 history: false
                 daily: true
                 display:
@@ -187,23 +187,23 @@ categories:
         queries:
             - ws_1:
                 name: 'Web Service 1'
-                query: 'search 200 | regex url="^/ws/1/artist/" | regex query=".*" | stats count | eval name="Artists" | fields name, count
-                        | append [search 200 | regex url="^/ws/1/release-group/" | regex query=".*" | stats count | eval name="Release-groups" | fields name, count]
-                        | append [search 200 | regex url="^/ws/1/release/" | regex query=".*" | stats count | eval name="Releases" | fields name, count]
-                        | append [search 200 | regex url="^/ws/1/track/" | regex query=".*" | stats count | eval name="Tracks" | fields name, count]
-                        | append [search 200 | regex url="^/ws/1/label/" | regex query=".*" | stats count | eval name="Labels" | fields name, count]'
+                query: 'search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/ws/1/artist/" | regex query=".*" | stats count | eval name="Artists" | fields name, count
+                        | append [search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/ws/1/release-group/" | regex query=".*" | stats count | eval name="Release-groups" | fields name, count]
+                        | append [search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/ws/1/release/" | regex query=".*" | stats count | eval name="Releases" | fields name, count]
+                        | append [search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/ws/1/track/" | regex query=".*" | stats count | eval name="Tracks" | fields name, count]
+                        | append [search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/ws/1/label/" | regex query=".*" | stats count | eval name="Labels" | fields name, count]'
                 history: false
                 daily: true
                 display:
                     limit: 5
             - ws_2:
                 name: 'Web Service 2'
-                query: 'search 200 | regex url="^/ws/2/artist/" | regex query=".*" | stats count | eval name="Artists" | fields name, count
-                        | append [search 200 | regex url="^/ws/2/release-group/" | regex query=".*" | stats count | eval name="Release-groups" | fields name, count]
-                        | append [search 200 | regex url="^/ws/2/release/" | regex query=".*" | stats count | eval name="Releases" | fields name, count]
-                        | append [search 200 | regex url="^/ws/2/recording/" | regex query=".*" | stats count | eval name="Recordings" | fields name, count]
-                        | append [search 200 | regex url="^/ws/2/work/" | regex query=".*" | stats count | eval name="Works" | fields name, count]
-                        | append [search 200 | regex url="^/ws/2/label/" | regex query=".*" | stats count | eval name="Labels" | fields name, count]'
+                query: 'search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/ws/2/artist/" | regex query=".*" | stats count | eval name="Artists" | fields name, count
+                        | append [search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/ws/2/release-group/" | regex query=".*" | stats count | eval name="Release-groups" | fields name, count]
+                        | append [search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/ws/2/release/" | regex query=".*" | stats count | eval name="Releases" | fields name, count]
+                        | append [search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/ws/2/recording/" | regex query=".*" | stats count | eval name="Recordings" | fields name, count]
+                        | append [search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/ws/2/work/" | regex query=".*" | stats count | eval name="Works" | fields name, count]
+                        | append [search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/ws/2/label/" | regex query=".*" | stats count | eval name="Labels" | fields name, count]'
                 history: false
                 daily: true
                 display:
@@ -213,17 +213,17 @@ categories:
         queries:
             - about_menu:
                 name: 'About menu'
-                query: 'search 200 | regex url="^/doc/About" | stats count | eval name="About" | fields name, count 
-                        | append [search 200 | regex url="^/doc/About/Sponsors" | stats count | eval name="Sponsors" | fields name, count]
-                        | append [search 200 | regex url="^/doc/About/Team" | stats count | eval name="Team" | fields name, count]
-                        | append [search 200 | regex url="^/doc/About/Data_License" | stats count | eval name="Data License" | fields name, count]
-                        | append [search 200 | regex url="^/doc/Social_Contract" | stats count | eval name="Social Contract" | fields name, count]
-                        | append [search 200 | regex url="^/doc/Code_of_Conduct" | stats count | eval name="Code of Conduct" | fields name, count]
-                        | append [search 200 | regex url="^/doc/About/Privacy_Policy" | stats count | eval name="Privacy Policy" | fields name, count]
-                        | append [search 200 | regex ="^/elections" | stats count | eval name="Auto-editor Elections" | fields name, count]
-                        | append [search 200 | regex url="^/privileged" | stats count | eval name="Privileged User Accounts" | fields name, count]
-                        | append [search 200 | regex url="^/statistics" | stats count | eval name="Statistics" | fields name, count]
-                        | append [search 200 | regex url="^/statistics/timeline" | stats count | eval name="Timeline Graph" | fields name, count]'
+                query: 'search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/doc/About" | stats count | eval name="About" | fields name, count 
+                        | append [search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/doc/About/Sponsors" | stats count | eval name="Sponsors" | fields name, count]
+                        | append [search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/doc/About/Team" | stats count | eval name="Team" | fields name, count]
+                        | append [search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/doc/About/Data_License" | stats count | eval name="Data License" | fields name, count]
+                        | append [search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/doc/Social_Contract" | stats count | eval name="Social Contract" | fields name, count]
+                        | append [search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/doc/Code_of_Conduct" | stats count | eval name="Code of Conduct" | fields name, count]
+                        | append [search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/doc/About/Privacy_Policy" | stats count | eval name="Privacy Policy" | fields name, count]
+                        | append [search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex ="^/elections" | stats count | eval name="Auto-editor Elections" | fields name, count]
+                        | append [search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/privileged" | stats count | eval name="Privileged User Accounts" | fields name, count]
+                        | append [search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/statistics" | stats count | eval name="Statistics" | fields name, count]
+                        | append [search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/statistics/timeline" | stats count | eval name="Timeline Graph" | fields name, count]'
                 history: false
                 daily: true
                 display:
@@ -234,17 +234,17 @@ categories:
                         type: 'pie'
             - products_menu:
                 name: 'Product menu'
-                query: 'search 200 | regex url="^/doc/Products" | stats count | eval name="Products" | fields name, count 
-                        | append [search 200 | regex url="^/doc/MusicBrainz_Picard" | stats count | eval name="MusicBrainz Picard" | fields name, count]
-                        | append [search 200 | regex url="^/doc/Jaikoz" | stats count | eval name="Jaikoz tagger" | fields name, count]
-                        | append [search 200 | regex url="^/doc/Magic_MP3_Tagger" | stats count | eval name="Magic MP3 Tagger" | fields name, count]
-                        | append [search 200 | regex url="^/doc/MusicBrainz_for_Android" | stats count | eval name="MusicBrainz for Android" | fields name, count]
-                        | append [search 200 | regex url="^/doc/MusicBrainz_Server" | stats count | eval name="MusicBrainz Server" | fields name, count]
-                        | append [search 200 | regex url="^/doc/MusicBrainz_Database" | stats count | eval name="Musicbrainz Database" | fields name, count]
-                        | append [search 200 | regex url="^/doc/Developer_Resources" | stats count | eval name="Developer Resources" | fields name, count]
-                        | append [search 200 | regex url="^/doc/XML_Web_Service" | stats count | eval name="XML Web Service" | fields name, count]
-                        | append [search 200 | regex url="^/doc/Live_Data_Feed" | stats count | eval name="Live Data Feed" | fields name, count]
-                        | append [search 200 | regex url="^/doc/FreeDB_Gateway" | stats count | eval name="FreeDB Gateway" | fields name, count]'
+                query: 'search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/doc/Products" | stats count | eval name="Products" | fields name, count 
+                        | append [search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/doc/MusicBrainz_Picard" | stats count | eval name="MusicBrainz Picard" | fields name, count]
+                        | append [search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/doc/Jaikoz" | stats count | eval name="Jaikoz tagger" | fields name, count]
+                        | append [search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/doc/Magic_MP3_Tagger" | stats count | eval name="Magic MP3 Tagger" | fields name, count]
+                        | append [search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/doc/MusicBrainz_for_Android" | stats count | eval name="MusicBrainz for Android" | fields name, count]
+                        | append [search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/doc/MusicBrainz_Server" | stats count | eval name="MusicBrainz Server" | fields name, count]
+                        | append [search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/doc/MusicBrainz_Database" | stats count | eval name="Musicbrainz Database" | fields name, count]
+                        | append [search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/doc/Developer_Resources" | stats count | eval name="Developer Resources" | fields name, count]
+                        | append [search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/doc/XML_Web_Service" | stats count | eval name="XML Web Service" | fields name, count]
+                        | append [search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/doc/Live_Data_Feed" | stats count | eval name="Live Data Feed" | fields name, count]
+                        | append [search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/doc/FreeDB_Gateway" | stats count | eval name="FreeDB Gateway" | fields name, count]'
                 history: false
                 daily: true
                 display:
@@ -255,11 +255,11 @@ categories:
                         type: 'pie'
             - search_menu:
                 name: 'Search menu'
-                query: 'search 200 | regex url="^/search" | stats count | eval name="Search" | fields name, count 
-                        | append [search 200 | regex url="^/search/edits" | stats count | eval name="Search Edits" | fields name, count]
-                        | append [search 200 | regex url="^/browse" | stats count | eval name="Browse" | fields name, count]
-                        | append [search 200 | regex url="^/tags" | stats count | eval name="Tags" | fields name, count]
-                        | append [search 200 | regex url="^/cdstub/browse" | stats count | eval name="Top CD Stubs" | fields name, count]'
+                query: 'search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/search" | stats count | eval name="Search" | fields name, count 
+                        | append [search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/search/edits" | stats count | eval name="Search Edits" | fields name, count]
+                        | append [search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/browse" | stats count | eval name="Browse" | fields name, count]
+                        | append [search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/tags" | stats count | eval name="Tags" | fields name, count]
+                        | append [search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/cdstub/browse" | stats count | eval name="Top CD Stubs" | fields name, count]'
                 history: false
                 daily: true
                 display:
