@@ -90,7 +90,7 @@ def main():
             
             # Get Splunk query response
             try:
-                response = splunk_conn.jobs.create(splunk_query['query'], exec_mode='oneshot', output_mode='json')
+                response = splunk_conn.jobs.create(splunk_query['query'], exec_mode='oneshot', output_mode='json', count=0, max_count=5000)
             except HTTPError, e:
                 print "Splunk error: %s" % str(e.message)
                 sys.exit(1)
@@ -161,19 +161,42 @@ def main():
                     # Do not display mbids
                     del line['mbid']
             
-            # Create a wrapper for JSON data
-            data_json_wrapper = {
-                'data'    : data_json, 
-                'name'    : splunk_query['name'],
-                'display' : splunk_query['display']}
+            # Array containing dumped json data
+            data_dict = {}      
             
-            data = json.dumps(data_json_wrapper)
+            # If the report is grouped, create multiple reports
+            if splunk_query['is_grouped']:
+                temp_group_name = ''
+                temp_group_data = []
+                for line in data_json:
+                    if temp_group_name == '':
+                        temp_group_name = line['urlGroup']
+                        temp_group_data.append(line)
+                    elif line['urlGroup'] == temp_group_name:
+                        temp_group_data.append(line)
+                    else:
+                        # Create a wrapper for JSON data
+                        json_wrapper = {
+                            'data'    : temp_group_data,
+                            'display' : splunk_query['display']}
+                        data_dict[temp_group_name] = json.dumps(json_wrapper)
+                    
+                        temp_group_name = line['urlGroup']
+                        temp_group_data = [line]
+                    del line['urlGroup']
+            else:
+                # Create a wrapper for JSON data
+                json_wrapper = {
+                    'data'    : data_json, 
+                    'display' : splunk_query['display']}
+                data_dict[splunk_query['name']] = json.dumps(json_wrapper)
             
             try:
-                # Store results in db, commit
-                db_cursor.execute("INSERT INTO log_statistic (category, data) VALUES (%s, %s);",
-                    (category['name'], str(data)))
-                db_conn.commit()
+                for name, data in data_dict.iteritems():
+                    # Store results in db, commit
+                    db_cursor.execute("INSERT INTO log_statistic (name, category, data) VALUES (%s, %s, %s);",
+                        (name, category['name'], data))
+                
             except Exception, e:
                 # Rollback
                 db_conn.rollback()
@@ -183,6 +206,7 @@ def main():
                 sys.exit(1)
                 
     # Close connection
+    db_conn.commit()
     db_cursor.close()
     db_conn.close()
     
