@@ -53,11 +53,11 @@ categories:
                 name: 'Query group'
                 query: 'search sourcetype="nginx_log" earliest=-1d@d latest=@d
                         | head 100000 | eval urlGroup = "" | eval urlGroup = 
-                            case(match(url,"^/ws/1/label/"),"/ws/1/label/",
-                                match(url,"^/ws/1/artist/"),"/ws/1/artist/", 
-                                match(url,"^/ws/1/release-group/"),"/ws/1/release-group/", 
-                                match(url,"^/ws/1/release/"),"/ws/1/release/",
-                                match(url,"^/ws/1/track/"),"/ws/1/track/")
+                            case(match(url,"^/ws/1/label/"),"Labels",
+                                match(url,"^/ws/1/artist/"),"Artists", 
+                                match(url,"^/ws/1/release-group/"),"Release-groups", 
+                                match(url,"^/ws/1/release/"),"Releases",
+                                match(url,"^/ws/1/track/"),"Tracks")
                         | top 50 inc by urlGroup'
                 is_grouped: true
                 history: true
@@ -79,12 +79,12 @@ categories:
                 name: 'Query group'
                 query: 'search sourcetype="nginx_log" earliest=-1d@d latest=@d
                         | head 100000 | eval urlGroup = "" | eval urlGroup = 
-                            case(match(url,"^/ws/2/label/"),"/ws/2/label/",
-                                match(url,"^/ws/2/artist/"),"/ws/2/artist/", 
-                                match(url,"^/ws/2/release-group/"),"/ws/2/release-group/", 
-                                match(url,"^/ws/2/release/"),"/ws/2/release/",
-                                match(url,"^/ws/2/recording/"),"/ws/2/recording/",
-                                match(url,"^/ws/2/work/"),"/ws/2/work/")
+                            case(match(url,"^/ws/2/label/"),"Labels",
+                                match(url,"^/ws/2/artist/"),"Artists", 
+                                match(url,"^/ws/2/release-group/"),"Release-groups", 
+                                match(url,"^/ws/2/release/"),"Releases",
+                                match(url,"^/ws/2/recording/"),"Recordings",
+                                match(url,"^/ws/2/work/"),"Works")
                         | top 50 inc by urlGroup'
                 is_grouped: true
                 history: true

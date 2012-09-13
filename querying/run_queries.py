@@ -23,7 +23,7 @@ from splunklib.client import connect
 from splunklib.binding import HTTPError
 
 # Test mode, and YAML files
-TEST_MODE = True
+TEST_MODE = False
 QUERIES = 'queries.yml'
 QUERIES_TEST = 'queries_test.yml'
 ENTITY_TABLES = 'entity_tables.yml'
@@ -166,33 +166,27 @@ def main():
             
             # If the report is grouped, create multiple reports
             if splunk_query['is_grouped']:
-                temp_group_name = ''
-                temp_group_data = []
                 for line in data_json:
-                    if temp_group_name == '':
-                        temp_group_name = line['urlGroup']
-                        temp_group_data.append(line)
-                    elif line['urlGroup'] == temp_group_name:
-                        temp_group_data.append(line)
+                    if (data_dict.has_key(line['urlGroup'])):
+                        data_dict[line['urlGroup']].append(line)
                     else:
-                        # Create a wrapper for JSON data
-                        json_wrapper = {
-                            'data'    : temp_group_data,
-                            'display' : splunk_query['display']}
-                        data_dict[temp_group_name] = json.dumps(json_wrapper)
-                    
-                        temp_group_name = line['urlGroup']
-                        temp_group_data = [line]
+                        data_dict[line['urlGroup']] = [line]
                     del line['urlGroup']
             else:
-                # Create a wrapper for JSON data
-                json_wrapper = {
-                    'data'    : data_json, 
-                    'display' : splunk_query['display']}
-                data_dict[splunk_query['name']] = json.dumps(json_wrapper)
+                data_dict[splunk_query['name']] = data_json
+                
+            # Create a wrapper for JSON data
+            data_wrap = {}
+            for key, data in data_dict.iteritems():
+                data = {
+                    'data'    : data, 
+                    'display' : splunk_query['display']
+                }
+                data = json.dumps(data)
+                data_wrap[key] = data
             
             try:
-                for name, data in data_dict.iteritems():
+                for name, data in data_wrap.iteritems():
                     # Store results in db, commit
                     db_cursor.execute("INSERT INTO log_statistic (name, category, data) VALUES (%s, %s, %s);",
                         (name, category['name'], data))
