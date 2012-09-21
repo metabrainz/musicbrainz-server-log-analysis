@@ -26,6 +26,9 @@ categories:
                     - unknown_various_artists:
                         column: 'mbid'
                         values:
+                            - '71890ad3-6870-476c-b34e-5d8ba4f923ae'
+                            - '97d9d5bd-0354-40c4-a272-249151137eb6'
+                            - '0b1b2b46-e50e-4693-aad8-b8e072340f38'
                             - '8e107957-c443-45b4-84f7-8b054499ef78'
                             - '4e46dd54-81a6-4a75-a666-d0e447861e3f'
                             - 'f92c4ae1-fc81-4c54-b1b6-336cc0a1f338'
