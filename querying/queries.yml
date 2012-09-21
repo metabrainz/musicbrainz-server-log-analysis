@@ -23,9 +23,11 @@ categories:
                         yaxis: 'count'
                         type: 'bars'
                 filter:
-                    - unknown_artists:
+                    - unknown_various_artists:
                         column: 'mbid'
                         values:
+                            - '8e107957-c443-45b4-84f7-8b054499ef78'
+                            - '4e46dd54-81a6-4a75-a666-d0e447861e3f'
                             - 'f92c4ae1-fc81-4c54-b1b6-336cc0a1f338'
                             - '4d307588-7e57-4032-bde6-5f217fc09b2a'
                             - '125ec42a-7229-4250-afc5-e057484327fe'
@@ -43,7 +45,7 @@ categories:
         queries:
             - sum:
                 name: 'Summary'
-                query: 'search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/ws/1/" | top 50 inc'
+                query: 'search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/ws/1/" | mvdedup inc | top 50 inc'
                 is_grouped: false
                 history: false
                 daily: true
@@ -58,7 +60,7 @@ categories:
                                 match(url,"^/ws/1/release-group/"),"Release-groups", 
                                 match(url,"^/ws/1/release/"),"Releases",
                                 match(url,"^/ws/1/track/"),"Tracks")
-                        | top 50 inc by urlGroup'
+                        | mvdedup inc | top 50 inc by urlGroup'
                 is_grouped: true
                 history: true
                 daily: true
@@ -69,7 +71,7 @@ categories:
         queries:
             - sum:
                 name: 'Summary'
-                query: 'search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/ws/2/" | top 50 inc'
+                query: 'search sourcetype="nginx_log" earliest=-1d@d latest=@d | regex url="^/ws/2/" | mvdedup inc | top 50 inc'
                 is_grouped: false
                 history: false
                 daily: true
@@ -85,7 +87,7 @@ categories:
                                 match(url,"^/ws/2/release/"),"Releases",
                                 match(url,"^/ws/2/recording/"),"Recordings",
                                 match(url,"^/ws/2/work/"),"Works")
-                        | top 50 inc by urlGroup'
+                        | mvdedup inc | top 50 inc by urlGroup'
                 is_grouped: true
                 history: true
                 daily: true
@@ -132,17 +134,17 @@ categories:
                 name: 'About menu'
                 query: 'search sourcetype="nginx_log" earliest=-1d@d latest=@d
                         | fields url | eval name = "" | eval name = 
-                            case(match(url,"^/doc/About"),"About",
-                                match(url,"^/doc/About/Sponsors"),"Sponsors",
-                                match(url,"^/doc/About/Team"),"Team",
-                                match(url,"^/doc/About/Data_License"),"Data License",
-                                match(url,"^/doc/Social_Contract"),"Social Contract",
-                                match(url,"^/doc/Code_of_Conduct"),"Code of Conduct",
-                                match(url,"^/doc/About/Privacy_Policy"),"Privacy Policy",
-                                match(url,"^/elections"),"Auto-editor Elections",
-                                match(url,"^/privileged"),"Privileged User Accounts",
-                                match(url,"^/statistics"),"Statistics",
-                                match(url,"^/statistics/timeline"),"Timeline Graph")
+                            case(match(url,"^/doc/About$"),"About",
+                                match(url,"^/doc/About/Sponsors$"),"Sponsors",
+                                match(url,"^/doc/About/Team$"),"Team",
+                                match(url,"^/doc/About/Data_License$"),"Data License",
+                                match(url,"^/doc/Social_Contract$"),"Social Contract",
+                                match(url,"^/doc/Code_of_Conduct$"),"Code of Conduct",
+                                match(url,"^/doc/About/Privacy_Policy$"),"Privacy Policy",
+                                match(url,"^/elections$"),"Auto-editor Elections",
+                                match(url,"^/privileged$"),"Privileged User Accounts",
+                                match(url,"^/statistics$"),"Statistics",
+                                match(url,"^/statistics/timeline$"),"Timeline Graph")
                         | stats count by name'
                 is_grouped: false
                 history: false
@@ -157,17 +159,17 @@ categories:
                 name: 'Product menu'
                 query: 'search sourcetype="nginx_log" earliest=-1d@d latest=@d
                         | fields url | eval name = "" | eval name = 
-                            case(match(url,"^/doc/Products"),"Products",
-                                match(url,"^/doc/MusicBrainz_Picard"),"MusicBrainz Picard",
-                                match(url,"^/doc/Jaikoz"),"Jaikoz tagger",
-                                match(url,"^/doc/Magic_MP3_Tagger"),"Magic MP3 Tagger",
-                                match(url,"^/doc/MusicBrainz_for_Android"),"MusicBrainz for Android",
-                                match(url,"^/doc/MusicBrainz_Server"),"MusicBrainz Server",
-                                match(url,"^/doc/MusicBrainz_Database"),"Musicbrainz Database",
-                                match(url,"^/doc/Developer_Resources"),"Developer Resources",
-                                match(url,"^/doc/XML_Web_Service"),"XML Web Service",
-                                match(url,"^/doc/Live_Data_Feed"),"Live Data Feed",
-                                match(url,"^/doc/FreeDB_Gateway"),"FreeDB Gateway")
+                            case(match(url,"^/doc/Products$"),"Products",
+                                match(url,"^/doc/MusicBrainz_Picard$"),"MusicBrainz Picard",
+                                match(url,"^/doc/Jaikoz$"),"Jaikoz tagger",
+                                match(url,"^/doc/Magic_MP3_Tagger$"),"Magic MP3 Tagger",
+                                match(url,"^/doc/MusicBrainz_for_Android$"),"MusicBrainz for Android",
+                                match(url,"^/doc/MusicBrainz_Server$"),"MusicBrainz Server",
+                                match(url,"^/doc/MusicBrainz_Database$"),"Musicbrainz Database",
+                                match(url,"^/doc/Developer_Resources$"),"Developer Resources",
+                                match(url,"^/doc/XML_Web_Service$"),"XML Web Service",
+                                match(url,"^/doc/Live_Data_Feed$"),"Live Data Feed",
+                                match(url,"^/doc/FreeDB_Gateway$"),"FreeDB Gateway")
                         | stats count by name'
                 is_grouped: false
                 history: false
@@ -182,11 +184,11 @@ categories:
                 name: 'Search menu'
                 query: 'search sourcetype="nginx_log" earliest=-1d@d latest=@d
                         | fields url | eval name = "" | eval name = 
-                            case(match(url,"^/search"),"Search",
-                                match(url,"^/search/edits"),"Search Edits",
-                                match(url,"^/browse"),"Browse",
-                                match(url,"^/tags"),"Tags",
-                                match(url,"^/cdstub/browse"),"Top CD Stubs")
+                            case(match(url,"^/search$"),"Search",
+                                match(url,"^/search/edits$"),"Search Edits",
+                                match(url,"^/browse$"),"Browse",
+                                match(url,"^/tags$"),"Tags",
+                                match(url,"^/cdstub/browse$"),"Top CD Stubs")
                         | stats count by name'
                 is_grouped: false
                 history: false
