@@ -188,7 +188,7 @@ def main():
             try:
                 for name, data in data_wrap.iteritems():
                     # Store results in db, commit
-                    db_cursor.execute("INSERT INTO log_statistic (name, category, data) VALUES (%s, %s, %s);",
+                    db_cursor.execute("INSERT INTO statistics.log_statistic (name, category, data) VALUES (%s, %s, %s);",
                         (name, category['name'], data))
                 
             except Exception, e:
